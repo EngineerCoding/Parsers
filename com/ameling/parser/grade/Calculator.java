@@ -1,4 +1,6 @@
-/*
+package com.ameling.parser.grade;
+
+/*******************************************************************************
  * Copyright 2015 Wesley Ameling
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,9 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-
-package com.ameling.parser.grade;
+ ******************************************************************************/
 
 import com.ameling.parser.SyntaxException;
 
@@ -46,7 +46,7 @@ public class Calculator {
 	 *
 	 * @param grades Thee grades to use
 	 */
-	public Calculator (final Grade[] grades) {
+	public Calculator(final Grade[] grades) {
 		this.grades = unmodifiableList(asList(grades));
 	}
 
@@ -58,7 +58,7 @@ public class Calculator {
 	 * @param average What the average should be
 	 * @return the given grade's value to achieve the average
 	 */
-	public double calculateGrade (final String name, final double average) {
+	public double calculateGrade(final String name, final double average) {
 		final Grade grade = getGrade(name);
 		if (grade != null)
 			return calculateGrade(grade, average);
@@ -77,7 +77,7 @@ public class Calculator {
 	 * @see Grade#setGrade(double)
 	 * @see Grade#reset()
 	 */
-	public double calculateGrade (final Grade grade, double average) {
+	public double calculateGrade(final Grade grade, double average) {
 		if (grade != null) {
 			// Firstly we want to collect all grades which have a value set, along with their weighting in the average grade
 			final List<Grade> setGrades = new ArrayList<Grade>();
@@ -110,7 +110,7 @@ public class Calculator {
 	 * @param name The name of the grade
 	 * @return The {@link Grade} object corresponding with the name
 	 */
-	public Grade getGrade (final String name) {
+	public Grade getGrade(final String name) {
 		if (name != null) {
 			for (final Grade grade : grades)
 				if (name.equals(grade.name))
@@ -125,7 +125,7 @@ public class Calculator {
 	 * @return The average of all set {@link Grade} objects
 	 * @see Grade#isSet
 	 */
-	public double calculateAverage () {
+	public double calculateAverage() {
 		double total = 0.0D; // The total of all grades
 		int totalWeighting = 0; // Total weighting
 

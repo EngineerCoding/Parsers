@@ -1,4 +1,6 @@
-/*
+package com.ameling.parser;
+
+/*******************************************************************************
  * Copyright 2015 Wesley Ameling
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,9 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-
-package com.ameling.parser;
+ ******************************************************************************/
 
 import java.io.IOException;
 import java.io.Reader;
@@ -42,7 +42,7 @@ public class Tokenizer {
 	 *
 	 * @param reader The reader to use
 	 */
-	public Tokenizer (final Reader reader) {
+	public Tokenizer(final Reader reader) {
 		if (reader == null)
 			throw new NullPointerException();
 
@@ -60,7 +60,7 @@ public class Tokenizer {
 	 * @see #peek()
 	 * @see #skipBlanks()
 	 */
-	public boolean isNext (char character) {
+	public boolean isNext(char character) {
 		skipBlanks();
 		final Character c = peek();
 		if (c != null && c == character) {
@@ -78,7 +78,7 @@ public class Tokenizer {
 	 * <li>Null when the current position is not in range (by default that is that the end of the String).</li>
 	 * </ul>
 	 */
-	public Character peek () {
+	public Character peek() {
 		return character;
 	}
 
@@ -90,25 +90,28 @@ public class Tokenizer {
 	 * <li>Null when the current position is not in range.</li>
 	 * </ul>
 	 */
-	public Character pop () {
-		final Character backup = character;
-		try {
-			final int cValue = reader.read();
-			if (cValue == -1) {
+	public Character pop() {
+		if (character != null) {
+			final Character backup = character;
+			try {
+				final int cValue = reader.read();
+				if (cValue == -1) {
+					character = null;
+					reader.close(); // Release the reader's resources and close the InputStream
+				} else {
+					character = (char) cValue;
+				}
+			} catch (final IOException e) {
 				character = null;
-			} else {
-				character = (char) cValue;
 			}
-		} catch (IOException e) {
-			character = null;
 		}
-		return backup;
+		return character; // Is null, technically just a lazy reference
 	}
 
 	/**
 	 * Sets the position to the next non-whitespace character.
 	 */
-	public void skipBlanks () {
+	public void skipBlanks() {
 		Character character;
 		while ((character = peek()) != null && Character.isWhitespace(character))
 			pop();

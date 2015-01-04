@@ -1,4 +1,6 @@
-/*
+package com.ameling.parser;
+
+/*******************************************************************************
  * Copyright 2015 Wesley Ameling
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,9 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-
-package com.ameling.parser;
+ ******************************************************************************/
 
 /**
  * This is an unchecked exception to tell the developer that a syntax error occurred
@@ -35,7 +35,7 @@ public class SyntaxException extends RuntimeException {
 	 *
 	 * @param message - The message
 	 */
-	public SyntaxException (final String message) {
+	public SyntaxException(final String message) {
 		this.message = message;
 	}
 
@@ -47,7 +47,7 @@ public class SyntaxException extends RuntimeException {
 	 * @throws NullPointerException     If the format is null
 	 * @throws IllegalArgumentException When the format does not match the objects
 	 */
-	public SyntaxException (final String format, final Object... objects) {
+	public SyntaxException(final String format, final Object... objects) {
 		if (format != null) {
 			message = String.format(format, objects);
 			return;
@@ -62,7 +62,7 @@ public class SyntaxException extends RuntimeException {
 	 * @see #SyntaxException(String, Object[])
 	 */
 	@Override
-	public String getMessage () {
+	public String getMessage() {
 		return message;
 	}
 }

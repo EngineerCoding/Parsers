@@ -1,4 +1,6 @@
-/*
+package com.ameling.parser.grade.util;
+
+/*******************************************************************************
  * Copyright 2015 Wesley Ameling
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,9 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-
-package com.ameling.parser.grade.util;
+ ******************************************************************************/
 
 /**
  * This class represents a mathematical fraction (only with integers)
@@ -33,7 +33,7 @@ public final class Fraction implements Cloneable {
 	 */
 	private int denominator;
 
-	public Fraction (final int numerator, final int denominator) {
+	public Fraction(final int numerator, final int denominator) {
 		if (denominator == 0)
 			throw new ArithmeticException("Cannot divide by 0");
 		this.numerator = numerator;
@@ -46,7 +46,7 @@ public final class Fraction implements Cloneable {
 	 *
 	 * @return The numerator of this fraction
 	 */
-	public int getNumerator () {
+	public int getNumerator() {
 		return numerator;
 	}
 
@@ -55,7 +55,7 @@ public final class Fraction implements Cloneable {
 	 *
 	 * @return The denominator of this fraction
 	 */
-	public int getDenominator () {
+	public int getDenominator() {
 		return denominator;
 	}
 
@@ -64,7 +64,7 @@ public final class Fraction implements Cloneable {
 	 *
 	 * @param n The value to multiply with
 	 */
-	public void multiply (final int n) {
+	public void multiply(final int n) {
 		numerator *= n;
 		makeSmallest();
 	}
@@ -75,7 +75,7 @@ public final class Fraction implements Cloneable {
 	 * @param n The value to divide with
 	 * @throws java.lang.ArithmeticException when n = 0
 	 */
-	public void divide (final int n) {
+	public void divide(final int n) {
 		if (n == 0)
 			throw new ArithmeticException("Cannot divide by 0");
 		denominator *= n;
@@ -87,7 +87,7 @@ public final class Fraction implements Cloneable {
 	 *
 	 * @param fraction The fraction to add with
 	 */
-	public void add (Fraction fraction) {
+	public void add(Fraction fraction) {
 		if (fraction.denominator == denominator) {
 			numerator += fraction.numerator;
 			makeSmallest();
@@ -107,7 +107,7 @@ public final class Fraction implements Cloneable {
 	/**
 	 * Makes the smallest fraction possible without having decimal points. For instance, 8/24 can become 1/3
 	 */
-	public Fraction makeSmallest () {
+	public Fraction makeSmallest() {
 		if (denominator % numerator == 0 && numerator != 1) {
 			denominator /= numerator;
 			numerator = 1;
@@ -122,7 +122,7 @@ public final class Fraction implements Cloneable {
 	 * The loop which is called recursively. This is only used in {@link #makeSmallest}.<br/>
 	 * This loop tries to divide the numerator with the value:<pre>2 <= value <= denominator</pre>
 	 */
-	private void makeSmallest_loop () {
+	private void makeSmallest_loop() {
 		for (int i = denominator; i > 1; i--) {
 			if (numerator % i == 0 && denominator % i == 0) {
 				numerator /= i;
@@ -134,7 +134,7 @@ public final class Fraction implements Cloneable {
 	}
 
 	@Override
-	public boolean equals (final Object other) {
+	public boolean equals(final Object other) {
 		if (other != null && other instanceof Fraction) {
 			final Fraction fraction = (Fraction) other;
 			return fraction.numerator == numerator && fraction.denominator == denominator;
@@ -143,7 +143,7 @@ public final class Fraction implements Cloneable {
 	}
 
 	@Override
-	public Fraction clone () {
+	public Fraction clone() {
 		return new Fraction(numerator, denominator);
 	}
 }

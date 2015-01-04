@@ -1,4 +1,6 @@
-/*
+package com.ameling.parser;
+
+/*******************************************************************************
  * Copyright 2015 Wesley Ameling
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,9 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-
-package com.ameling.parser;
+ ******************************************************************************/
 
 /**
  * This class is here for pure efficiency, it holds all String and char constants to optimize the code, especially in parsers and also for exception throwing <br/>
@@ -24,7 +24,7 @@ package com.ameling.parser;
  */
 public final class Constants {
 	// Not intended as object
-	private Constants () {
+	private Constants() {
 	}
 
 	// All used chars
@@ -33,13 +33,18 @@ public final class Constants {
 	public static final char CHAR_JSON_ARRAY_START = '[';
 	public static final char CHAR_JSON_ARRAY_END = ']';
 
+	public static final char CHAR_BRACKET_CLOSE = ')';
+	public static final char CHAR_BRACKET_OPEN = '(';
+
 	public static final char CHAR_QUOTE_DOUBLE = '"';
+	public static final char CHAR_QUOTE_SINGLE = '\'';
 	public static final char CHAR_COLON = ':';
 	public static final char CHAR_COMMA = ',';
 	public static final char CHAR_PLUS = '+';
+	public static final char CHAR_DASH = '-';
 
-	public static final char CHAR_BRACKET_CLOSE = ')';
-	public static final char CHAR_BRACKET_OPEN = '(';
+	// All used Strings
+	public static final String STRING_EMPTY = "";
 
 	// All formats to be used in Exceptions
 	public static final String FORMAT_EXPECTED_CHAR = "Expected '%s'";

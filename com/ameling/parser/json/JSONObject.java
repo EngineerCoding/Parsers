@@ -1,4 +1,6 @@
-/*
+package com.ameling.parser.json;
+
+/*******************************************************************************
  * Copyright 2015 Wesley Ameling
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,9 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-
-package com.ameling.parser.json;
+ ******************************************************************************/
 
 import com.ameling.parser.SyntaxException;
 import com.ameling.parser.Tokenizer;
@@ -46,7 +46,7 @@ public class JSONObject extends JSON {
 	/**
 	 * Creates an empty JSONObject
 	 */
-	public JSONObject () {
+	public JSONObject() {
 		super(null);
 	}
 
@@ -56,7 +56,7 @@ public class JSONObject extends JSON {
 	 *
 	 * @param jsonobject The string that reads a JSONObject
 	 */
-	public JSONObject (final String jsonobject) {
+	public JSONObject(final String jsonobject) {
 		this(new StringReader(jsonobject));
 	}
 
@@ -67,7 +67,7 @@ public class JSONObject extends JSON {
 	 * @param reader The reader to use for this object
 	 * @throws SyntaxException when a syntax error is detected in this string
 	 */
-	public JSONObject (final Reader reader) {
+	public JSONObject(final Reader reader) {
 		this(new Tokenizer(reader));
 	}
 
@@ -77,7 +77,7 @@ public class JSONObject extends JSON {
 	 * @param tokenizer - The tokenizer which is used to parse
 	 * @throws SyntaxException when a syntax error is detected in this tokenizer
 	 */
-	public JSONObject (final Tokenizer tokenizer) {
+	public JSONObject(final Tokenizer tokenizer) {
 		super(tokenizer);
 
 		if (tokenizer.isNext(CHAR_JSON_OBJECT_START)) { // Find the starting character
@@ -117,7 +117,7 @@ public class JSONObject extends JSON {
 	 * @return Whether it exists in the storage or not
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public boolean has (final String key) {
+	public boolean has(final String key) {
 		if (storage.containsKey(key))
 			return true;
 		throw new JSONException(FORMAT_EXPECTED_EXISTING_KEY, key, TYPE_JSON_OBJECT);
@@ -131,7 +131,7 @@ public class JSONObject extends JSON {
 	 * an actual value or java-null
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public boolean isNull (final String key) {
+	public boolean isNull(final String key) {
 		return JSON.isNullValue(get(key));
 	}
 
@@ -142,7 +142,7 @@ public class JSONObject extends JSON {
 	 * @return A {@link Type} object, defining the object which is associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public Type getType (final String key) {
+	public Type getType(final String key) {
 		return JSON.getType(get(key));
 	}
 
@@ -153,7 +153,7 @@ public class JSONObject extends JSON {
 	 * @return The value associated with the keys
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public Object get (final String key) {
+	public Object get(final String key) {
 		if (has(key))
 			return storage.get(key);
 		return null;
@@ -166,7 +166,7 @@ public class JSONObject extends JSON {
 	 * @return The {@link String} associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public String getString (final String key) {
+	public String getString(final String key) {
 		if (getType(key) == Type.String)
 			return (String) get(key);
 		throw new JSONException(FORMAT_EXPECTED_VALUE, key, TYPE_STRING);
@@ -180,7 +180,7 @@ public class JSONObject extends JSON {
 	 * @return The {@link Number} associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	private Number getNumber (final String key, final String type) {
+	private Number getNumber(final String key, final String type) {
 		if (getType(key) == Type.Number)
 			return (Number) get(key);
 		throw new JSONException(FORMAT_EXPECTED_VALUE, key, type);
@@ -193,7 +193,7 @@ public class JSONObject extends JSON {
 	 * @return The long associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public long getLong (final String key) {
+	public long getLong(final String key) {
 		return getNumber(key, TYPE_LONG).longValue();
 	}
 
@@ -204,7 +204,7 @@ public class JSONObject extends JSON {
 	 * @return The int associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public int getInt (final String key) {
+	public int getInt(final String key) {
 		return getNumber(key, TYPE_INT).intValue();
 	}
 
@@ -215,7 +215,7 @@ public class JSONObject extends JSON {
 	 * @return The short associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public short getShort (final String key) {
+	public short getShort(final String key) {
 		return getNumber(key, TYPE_SHORT).shortValue();
 	}
 
@@ -226,7 +226,7 @@ public class JSONObject extends JSON {
 	 * @return The byte associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public byte getByte (final String key) {
+	public byte getByte(final String key) {
 		return getNumber(key, TYPE_BYTE).byteValue();
 	}
 
@@ -237,7 +237,7 @@ public class JSONObject extends JSON {
 	 * @return The double associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public double getDouble (final String key) {
+	public double getDouble(final String key) {
 		return getNumber(key, TYPE_DOUBLE).doubleValue();
 	}
 
@@ -248,7 +248,7 @@ public class JSONObject extends JSON {
 	 * @return The float associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public float getFloat (final String key) {
+	public float getFloat(final String key) {
 		return getNumber(key, TYPE_FLOAT).floatValue();
 	}
 
@@ -259,7 +259,7 @@ public class JSONObject extends JSON {
 	 * @return The boolean associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public boolean getBoolean (final String key) {
+	public boolean getBoolean(final String key) {
 		if (getType(key) == Type.Boolean)
 			return (Boolean) get(key);
 		throw new JSONException(FORMAT_EXPECTED_VALUE, TYPE_BOOLEAN);
@@ -272,7 +272,7 @@ public class JSONObject extends JSON {
 	 * @return The {@link JSONObject} associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public JSONObject getJSONObject (final String key) {
+	public JSONObject getJSONObject(final String key) {
 		if (getType(key) == Type.JSONObject)
 			return (JSONObject) get(key);
 		throw new JSONException(FORMAT_EXPECTED_VALUE, TYPE_JSON_OBJECT);
@@ -285,7 +285,7 @@ public class JSONObject extends JSON {
 	 * @return The {@link JSONArray} associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public JSONArray getJSONArray (final String key) {
+	public JSONArray getJSONArray(final String key) {
 		if (getType(key) == Type.JSONArray)
 			return (JSONArray) get(key);
 		throw new JSONException(FORMAT_EXPECTED_VALUE, TYPE_JSON_ARRAY);
@@ -296,7 +296,7 @@ public class JSONObject extends JSON {
 	 *
 	 * @return A String[] containing all key strings
 	 */
-	public String[] getKeys () {
+	public String[] getKeys() {
 		String[] names = new String[storage.size()];
 
 		int index = 0;
@@ -314,7 +314,7 @@ public class JSONObject extends JSON {
 	 * @return Whether it succeed or not to set the value. It will fail when the key or value is null.
 	 * @throws JSONException when the key or value is null (use {@link #setNull(String)} to set a value to null}
 	 */
-	private JSONObject set (final String key, final Object value) {
+	private JSONObject set(final String key, final Object value) {
 		if (key != null && value != null) {
 			storage.put(key, value);
 			return this;
@@ -330,7 +330,7 @@ public class JSONObject extends JSON {
 	 * @return Whether it succeed or not to set the value. It will fail when the key or value is null.
 	 * @throws JSONException when the key or value is null (use {@link #setNull(String)} to set a value to null}
 	 */
-	public JSONObject set (final String key, final String value) {
+	public JSONObject set(final String key, final String value) {
 		return set(key, (Object) value);
 	}
 
@@ -342,7 +342,7 @@ public class JSONObject extends JSON {
 	 * @return Whether it succeed or not to set the value. It will fail when the key or value is null.
 	 * @throws JSONException when the key or value is null (use {@link #setNull(String)} to set a value to null}
 	 */
-	public JSONObject set (final String key, final boolean value) {
+	public JSONObject set(final String key, final boolean value) {
 		return set(key, (Boolean) value);
 	}
 
@@ -354,7 +354,7 @@ public class JSONObject extends JSON {
 	 * @return Whether it succeed or not to set the value. It will fail when the key or value is null.
 	 * @throws JSONException when the key or value is null (use {@link #setNull(String)} to set a value to null}
 	 */
-	public JSONObject set (final String key, final JSONObject value) {
+	public JSONObject set(final String key, final JSONObject value) {
 		return set(key, (Object) value);
 	}
 
@@ -366,7 +366,7 @@ public class JSONObject extends JSON {
 	 * @return Whether it succeed or not to set the value. It will fail when the key or value is null.
 	 * @throws JSONException when the key or value is null (use {@link #setNull(String)} to set a value to null}
 	 */
-	public JSONObject set (final String key, final JSONArray value) {
+	public JSONObject set(final String key, final JSONArray value) {
 		return set(key, (Object) value);
 	}
 
@@ -378,7 +378,7 @@ public class JSONObject extends JSON {
 	 * @return Whether it succeed or not to set the value. It will fail when the key or value is null.
 	 * @throws JSONException when the key or value is null (use {@link #setNull(String)} to set a value to null}
 	 */
-	public JSONObject set (final String key, final long value) {
+	public JSONObject set(final String key, final long value) {
 		return set(key, (Long) value);
 	}
 
@@ -390,7 +390,7 @@ public class JSONObject extends JSON {
 	 * @return Whether it succeed or not to set the value. It will fail when the key or value is null.
 	 * @throws JSONException when the key or value is null (use {@link #setNull(String)} to set a value to null}
 	 */
-	public JSONObject set (final String key, final int value) {
+	public JSONObject set(final String key, final int value) {
 		return set(key, (Integer) value);
 	}
 
@@ -402,7 +402,7 @@ public class JSONObject extends JSON {
 	 * @return Whether it succeed or not to set the value. It will fail when the key or value is null.
 	 * @throws JSONException when the key or value is null (use {@link #setNull(String)} to set a value to null}
 	 */
-	public JSONObject set (final String key, final short value) {
+	public JSONObject set(final String key, final short value) {
 		return set(key, (Short) value);
 	}
 
@@ -414,7 +414,7 @@ public class JSONObject extends JSON {
 	 * @return Whether it succeed or not to set the value. It will fail when the key or value is null.
 	 * @throws JSONException when the key or value is null (use {@link #setNull(String)} to set a value to null}
 	 */
-	public JSONObject set (final String key, final byte value) {
+	public JSONObject set(final String key, final byte value) {
 		return set(key, (Byte) value);
 	}
 
@@ -426,7 +426,7 @@ public class JSONObject extends JSON {
 	 * @return Whether it succeed or not to set the value. It will fail when the key or value is null.
 	 * @throws JSONException when the key or value is null (use {@link #setNull(String)} to set a value to null}
 	 */
-	public JSONObject set (final String key, final double value) {
+	public JSONObject set(final String key, final double value) {
 		return set(key, (Double) value);
 	}
 
@@ -438,7 +438,7 @@ public class JSONObject extends JSON {
 	 * @return Whether it succeed or not to set the value. It will fail when the key or value is null.
 	 * @throws JSONException when the key or value is null (use {@link #setNull(String)} to set a value to null}
 	 */
-	public JSONObject set (final String key, final float value) {
+	public JSONObject set(final String key, final float value) {
 		return set(key, (Float) value);
 	}
 
@@ -449,7 +449,7 @@ public class JSONObject extends JSON {
 	 * @return Whether it succeed or not. It will fail when the key is null
 	 * @throws JSONException when the key
 	 */
-	public JSONObject setNull (final String key) {
+	public JSONObject setNull(final String key) {
 		return set(key, JSON.NULL);
 	}
 
@@ -460,7 +460,7 @@ public class JSONObject extends JSON {
 	 * @return The int associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public void deleteNode (final String key) {
+	public void deleteNode(final String key) {
 		if (has(key))
 			storage.remove(key);
 	}

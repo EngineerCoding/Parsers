@@ -1,4 +1,6 @@
-/*
+package com.ameling.parser.json;
+
+/*******************************************************************************
  * Copyright 2015 Wesley Ameling
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,9 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-
-package com.ameling.parser.json;
+ ******************************************************************************/
 
 import com.ameling.parser.Constants;
 import com.ameling.parser.json.JSON.Type;
@@ -28,6 +28,7 @@ import static com.ameling.parser.Constants.CHAR_JSON_OBJECT_START;
 import static com.ameling.parser.Constants.CHAR_JSON_OBJECT_END;
 import static com.ameling.parser.Constants.CHAR_COLON;
 import static com.ameling.parser.Constants.CHAR_COMMA;
+import static com.ameling.parser.Constants.STRING_EMPTY;
 
 /**
  * This class is used to write to a {@link Writer} object. Then you can call
@@ -38,7 +39,6 @@ public class JSONWriter {
 
 	// All constants used within this class only
 	private static final char CHAR_TAB = '\t';
-	private static final String STRING_EMPTY = "";
 	private static final String STRING_SPACE = " ";
 	private static final String STRING_WRITER_NULL = "Writer is null";
 
@@ -63,7 +63,7 @@ public class JSONWriter {
 	 *
 	 * @param writer - The writer to use in this object
 	 */
-	public JSONWriter (Writer writer) {
+	public JSONWriter(Writer writer) {
 		this(writer, true);
 	}
 
@@ -73,7 +73,7 @@ public class JSONWriter {
 	 * @param writer - The writer to use in this object
 	 * @param indent - True to indent and add line-ends or false to have plain text
 	 */
-	public JSONWriter (final Writer writer, final boolean indent) {
+	public JSONWriter(final Writer writer, final boolean indent) {
 		this.writer = writer;
 		this.indent = indent;
 		if (writer == null)
@@ -86,7 +86,7 @@ public class JSONWriter {
 	 * @param parser - The object to write to the {@link #writer}
 	 * @throws IOException when the writer throws one
 	 */
-	public synchronized void append (final JSONArray parser) throws IOException {
+	public synchronized void append(final JSONArray parser) throws IOException {
 		writer.write(CHAR_JSON_ARRAY_START);
 
 		tabs += 1;
@@ -109,7 +109,7 @@ public class JSONWriter {
 	 * @param parser - The object to write to the {@link #writer}
 	 * @throws IOException when the {@link #writer} throws one
 	 */
-	public synchronized void append (final JSONObject parser) throws IOException {
+	public synchronized void append(final JSONObject parser) throws IOException {
 		writer.write(CHAR_JSON_OBJECT_START);
 
 		tabs += 1;
@@ -134,7 +134,7 @@ public class JSONWriter {
 	 *
 	 * @throws IOException when the {@link #writer} throws one
 	 */
-	private void markLineEnd () throws IOException {
+	private void markLineEnd() throws IOException {
 		if (indent) {
 			writer.write(System.lineSeparator());
 			StringBuilder sb = new StringBuilder();
@@ -151,7 +151,7 @@ public class JSONWriter {
 	 * @param hasNext - Whether have a ',' after the value
 	 * @throws IOException when the {@link #writer} throws one
 	 */
-	private void writeValue (final Object object, final boolean hasNext) throws IOException {
+	private void writeValue(final Object object, final boolean hasNext) throws IOException {
 		Type type = JSON.getType(object);
 		if (type != Type.Null) {
 			if (type == Type.String) {
@@ -175,7 +175,7 @@ public class JSONWriter {
 	 * @param string - The string in question
 	 * @throws IOException when the {@link #writer} throws one
 	 */
-	private void writeString (final String string) throws IOException {
+	private void writeString(final String string) throws IOException {
 		if (string != null) {
 			writer.write(Constants.CHAR_QUOTE_DOUBLE);
 			writer.write(string);

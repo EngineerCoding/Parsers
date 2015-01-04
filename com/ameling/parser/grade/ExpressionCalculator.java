@@ -1,4 +1,6 @@
-/*
+package com.ameling.parser.grade;
+
+/*******************************************************************************
  * Copyright 2015 Wesley Ameling
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,9 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-
-package com.ameling.parser.grade;
+ ******************************************************************************/
 
 import com.ameling.parser.Parser;
 import com.ameling.parser.SyntaxException;
@@ -84,7 +84,7 @@ public class ExpressionCalculator extends Calculator {
 		 *
 		 * @param tokenizer The tokenizer which letters an expression
 		 */
-		private Expression (final Tokenizer tokenizer) {
+		private Expression(final Tokenizer tokenizer) {
 			super(tokenizer); // required for the parent class, Parser
 
 			Double multiplier = parseNumber(false); // Parse a possible number, without e10 etc.
@@ -168,7 +168,7 @@ public class ExpressionCalculator extends Calculator {
 		 *
 		 * @param n The value to divide with
 		 */
-		private void divide (final int n) {
+		private void divide(final int n) {
 			if (n != 0) {
 				if (subExpressions.length != 0) {
 					for (final Expression expression : subExpressions)
@@ -185,7 +185,7 @@ public class ExpressionCalculator extends Calculator {
 		 *
 		 * @param n The value to multiply with
 		 */
-		private void multiply (final int n) {
+		private void multiply(final int n) {
 			if (n != 0) {
 				if (subExpressions.length != 0) {
 					for (final Expression expression : subExpressions)
@@ -200,7 +200,7 @@ public class ExpressionCalculator extends Calculator {
 		/**
 		 * Counts all fractions of sub-expressions if they are present.
 		 */
-		private void countFractions () {
+		private void countFractions() {
 			if (subExpressions.length != 0) {
 				final Fraction start = subExpressions[0].weighting.clone();
 				for (int i = 1; i < subExpressions.length; i++)
@@ -216,7 +216,7 @@ public class ExpressionCalculator extends Calculator {
 	 *
 	 * @param expression The string to parse
 	 */
-	public ExpressionCalculator (final String expression) {
+	public ExpressionCalculator(final String expression) {
 		this(new StringReader(expression));
 	}
 
@@ -226,7 +226,7 @@ public class ExpressionCalculator extends Calculator {
 	 *
 	 * @param reader The reader to parse from
 	 */
-	public ExpressionCalculator (final Reader reader) {
+	public ExpressionCalculator(final Reader reader) {
 		this(new Tokenizer(reader));
 	}
 
@@ -235,7 +235,7 @@ public class ExpressionCalculator extends Calculator {
 	 *
 	 * @param tokenizer The tokenizer which is the input of characters
 	 */
-	public ExpressionCalculator (final Tokenizer tokenizer) {
+	public ExpressionCalculator(final Tokenizer tokenizer) {
 		super(getGrades(tokenizer));
 	}
 
@@ -246,7 +246,7 @@ public class ExpressionCalculator extends Calculator {
 	 * @return The grades associated with the expression
 	 * @throws SyntaxException When the total weighting is not 1
 	 */
-	private static Grade[] getGrades (final Tokenizer tokenizer) {
+	private static Grade[] getGrades(final Tokenizer tokenizer) {
 		final Expression parentExpression = new Expression(tokenizer);
 
 		// If the parentExpression is not the Fraction 1/1, then the expression is not valid for an average
@@ -288,7 +288,7 @@ public class ExpressionCalculator extends Calculator {
 	 * @param subs The list to look through, used for recursion
 	 * @return An array with expressions which represent a grade
 	 */
-	private static Expression[] findGradeExpressions (final Expression[] subs) {
+	private static Expression[] findGradeExpressions(final Expression[] subs) {
 		final List<Expression> grades = new ArrayList<Expression>();
 		for (final Expression expression : subs) {
 			final int lengthSubExpression = expression.subExpressions.length;

@@ -1,4 +1,6 @@
-/*
+package com.ameling.parser.json;
+
+/*******************************************************************************
  * Copyright 2015 Wesley Ameling
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,9 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-
-package com.ameling.parser.json;
+ ******************************************************************************/
 
 import com.ameling.parser.SyntaxException;
 
@@ -26,7 +26,7 @@ public class JSONException extends SyntaxException {
 	 *
 	 * @param message - The message
 	 */
-	public JSONException (final String message) {
+	public JSONException(final String message) {
 		super(message);
 	}
 
@@ -38,7 +38,7 @@ public class JSONException extends SyntaxException {
 	 * @throws NullPointerException     If the format is null
 	 * @throws IllegalArgumentException When the format does not match the objects
 	 */
-	public JSONException (final String format, final Object... objects) {
+	public JSONException(final String format, final Object... objects) {
 		super(format, objects);
 	}
 }

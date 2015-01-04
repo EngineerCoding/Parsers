@@ -1,4 +1,6 @@
-/*
+package com.ameling.parser.math.functions;
+
+/*******************************************************************************
  * Copyright 2015 Wesley Ameling
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,9 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-
-package com.ameling.parser.math.functions;
+ ******************************************************************************/
 
 /**
  * One can calculate the root of a number<br/>
@@ -22,15 +22,15 @@ package com.ameling.parser.math.functions;
  */
 public class Root extends Function {
 
-    protected Root() {
-        super("root", 1, 2);
-    }
+	protected Root() {
+		super("root", 1, 2);
+	}
 
-    @Override
-    public double calculate(final double ... args) {
-        if(args.length == 1)
-            return calculate(new double[] {args[0], 2});
-        return Math.pow(args[0], 1 / args[1]);
-    }
+	@Override
+	public double calculate(final double... args) {
+		if (args.length == 1)
+			return calculate(new double[]{ args[0], 2 });
+		return Math.pow(args[0], 1 / args[1]);
+	}
 
 }

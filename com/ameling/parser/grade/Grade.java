@@ -1,4 +1,6 @@
-/*
+package com.ameling.parser.grade;
+
+/*******************************************************************************
  * Copyright 2015 Wesley Ameling
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,9 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-
-package com.ameling.parser.grade;
+ ******************************************************************************/
 
 import com.ameling.parser.json.IJSONFactory;
 import com.ameling.parser.json.JSON;
@@ -30,7 +30,7 @@ public class Grade {
 
 	public static class JSONFactory implements IJSONFactory<Grade> {
 
-		private JSONFactory () {}
+		private JSONFactory() {}
 
 		public static final JSONFactory instance = new JSONFactory();
 
@@ -40,7 +40,7 @@ public class Grade {
 		private static final String WEIGHTING = "weighting";
 
 		@Override
-		public JSON createJSON (final Grade object) {
+		public JSON createJSON(final Grade object) {
 			if (object != null) {
 				final JSONObject jsonObject = new JSONObject();
 				jsonObject.set(NAME, object.name);
@@ -57,7 +57,7 @@ public class Grade {
 		}
 
 		@Override
-		public Grade createInstance (final JSON json) {
+		public Grade createInstance(final JSON json) {
 			if (json != null && json instanceof JSONObject) {
 				final JSONObject jsonObject = (JSONObject) json;
 
@@ -90,7 +90,7 @@ public class Grade {
 	 * @param name      The name of this grade
 	 * @param weighting The weigthing of this grade
 	 */
-	public Grade (final String name, final int weighting) {
+	public Grade(final String name, final int weighting) {
 		this.name = name;
 		this.weighting = weighting;
 	}
@@ -110,7 +110,7 @@ public class Grade {
 	 *
 	 * @param grade The value to set to
 	 */
-	public void setGrade (final double grade) {
+	public void setGrade(final double grade) {
 		value = grade;
 		if (!isSet)
 			isSet = true;
@@ -119,12 +119,12 @@ public class Grade {
 	/**
 	 * Resets this grade's value (it is not set after calling this)
 	 */
-	public void reset () {
+	public void reset() {
 		isSet = false;
 	}
 
 	@Override
-	public String toString () {
+	public String toString() {
 		return JSONFactory.instance.createJSON(this).toString();
 	}
 }

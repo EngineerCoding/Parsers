@@ -1,4 +1,6 @@
-/*
+package com.ameling.parser;
+
+/*******************************************************************************
  * Copyright 2015 Wesley Ameling
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,11 +14,11 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ ******************************************************************************/
 
-package com.ameling.parser;
-
+import static com.ameling.parser.Constants.CHAR_DASH;
 import static com.ameling.parser.Constants.CHAR_QUOTE_DOUBLE;
+import static com.ameling.parser.Constants.CHAR_QUOTE_SINGLE;
 
 /**
  * This class is the base class of any parser. At least, any parsers which needs basic parsing method, because this class has methods to parse:
@@ -38,9 +40,7 @@ public abstract class Parser {
 	private static final char CHAR_E_LOWER = 'e';
 	private static final char CHAR_E_UPPER = 'E';
 	private static final char CHAR_F = 'f';
-	private static final char CHAR_QUOTE_SINGLE = '\'';
 	private static final char CHAR_SLASH_BACK = '\\';
-	private static final char CHAR_SUBTRACT = '-';
 	private static final char CHAR_T = 't';
 
 	private static final String EXCEPTION_MULTIPLE_DOTS = "Multiple dots have been found";
@@ -58,7 +58,7 @@ public abstract class Parser {
 	 *
 	 * @param tokenizer This should be used in {@link #parseValue()} method and in any other parsing part
 	 */
-	public Parser (Tokenizer tokenizer) {
+	public Parser(Tokenizer tokenizer) {
 		this.tokenizer = tokenizer;
 	}
 
@@ -76,14 +76,14 @@ public abstract class Parser {
 	 * @return the appropriate object for the next value
 	 * @throws SyntaxException when a value parser throws one, it will simply get back to the user
 	 */
-	protected Object parseValue () throws SyntaxException {
+	protected Object parseValue() throws SyntaxException {
 		tokenizer.skipBlanks();
 
 		Character character = tokenizer.peek();
 		if (character != null) {
 			if (character == CHAR_QUOTE_SINGLE || character == CHAR_QUOTE_DOUBLE) // check for a string
 				return parseString();
-			else if (Character.isDigit(character) || character == CHAR_SUBTRACT || character == Constants.CHAR_PLUS) // check for a number
+			else if (Character.isDigit(character) || character == CHAR_DASH || character == Constants.CHAR_PLUS) // check for a number
 				return parseNumber(true);
 			else if (character == CHAR_T || character == CHAR_F) // check for boolean
 				return parseBoolean();
@@ -97,7 +97,7 @@ public abstract class Parser {
 	 * @return {@link String} when it successfully parsed or null when it failed
 	 * @throws SyntaxException when a syntax error occurred
 	 */
-	protected final String parseString () throws SyntaxException {
+	protected final String parseString() throws SyntaxException {
 		tokenizer.skipBlanks();
 		Character character = tokenizer.peek();
 
@@ -144,7 +144,7 @@ public abstract class Parser {
 	 * @return {@link Number} object when it successfully parsed or null when it failed
 	 * @throws SyntaxException when a syntax error occurred
 	 */
-	protected final Double parseNumber (boolean parseE) throws SyntaxException {
+	protected final Double parseNumber(boolean parseE) throws SyntaxException {
 		tokenizer.skipBlanks();
 
 		Character character;
@@ -155,7 +155,7 @@ public abstract class Parser {
 			if (Character.isDigit(character)) {
 				// The next character is a digit, simply append
 				builder.append(tokenizer.pop());
-			} else if (character == CHAR_SUBTRACT || character == Constants.CHAR_PLUS) {
+			} else if (character == CHAR_DASH || character == Constants.CHAR_PLUS) {
 				// when a '+' or '-' is the character, it will check if the builder has any digits yet.
 				// When it hasn't got any digits, it is a unary minus or plus, when it already has digits, it could be an operator.
 				// We will stop this loop because it is treated as an unknown character
@@ -201,7 +201,7 @@ public abstract class Parser {
 	 * @return {@link Boolean} when it successfully parsed or null when it failed
 	 * @throws SyntaxException when a syntax error occurred
 	 */
-	protected final Boolean parseBoolean () throws SyntaxException {
+	protected final Boolean parseBoolean() throws SyntaxException {
 		tokenizer.skipBlanks();
 		Character character = tokenizer.peek();
 

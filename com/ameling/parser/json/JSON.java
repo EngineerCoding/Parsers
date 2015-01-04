@@ -1,4 +1,6 @@
-/*
+package com.ameling.parser.json;
+
+/*******************************************************************************
  * Copyright 2015 Wesley Ameling
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,9 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-
-package com.ameling.parser.json;
+ ******************************************************************************/
 
 import com.ameling.parser.Parser;
 import com.ameling.parser.Tokenizer;
@@ -89,14 +89,14 @@ public abstract class JSON extends Parser {
 		/**
 		 * Only reachable in {@link JSON} where the only Null object is stored
 		 */
-		private Null () {
+		private Null() {
 		}
 
 		/**
 		 * Makes sure to return null (called by {@link JSONWriter}
 		 */
 		@Override
-		public String toString () {
+		public String toString() {
 			return TYPE_NULL;
 		}
 	}
@@ -113,12 +113,12 @@ public abstract class JSON extends Parser {
 	 *
 	 * @param tokenizer The tokenizer to use for this object
 	 */
-	protected JSON (Tokenizer tokenizer) {
+	protected JSON(Tokenizer tokenizer) {
 		super(tokenizer);
 	}
 
 	@Override
-	protected final Object parseValue () throws RuntimeException {
+	protected final Object parseValue() throws RuntimeException {
 		tokenizer.skipBlanks();
 		Object obj = super.parseValue();
 		if (obj == null) {
@@ -141,7 +141,7 @@ public abstract class JSON extends Parser {
 	 *
 	 * @return Null object, to distinguish between a real and non-real Null object
 	 */
-	private Null parseNull () {
+	private Null parseNull() {
 		tokenizer.skipBlanks();
 		if (tokenizer.peek() == TYPE_NULL.charAt(0)) {
 			final StringBuilder sb = new StringBuilder();
@@ -159,7 +159,7 @@ public abstract class JSON extends Parser {
 	 * @return String representing this object
 	 */
 	@Override
-	public String toString () {
+	public String toString() {
 		return toString(false);
 	}
 
@@ -169,7 +169,7 @@ public abstract class JSON extends Parser {
 	 * @param indent Whether to indent and add line ends
 	 * @return String representing this JSON object
 	 */
-	public String toString (final boolean indent) {
+	public String toString(final boolean indent) {
 		final StringWriter sw = new StringWriter();
 		final JSONWriter writer = new JSONWriter(sw, indent);
 
@@ -197,7 +197,7 @@ public abstract class JSON extends Parser {
 	 * @param object - to check if this object is a dummy null value
 	 * @return Whether it is our dummy null value (from the JSON)
 	 */
-	protected static boolean isNullValue (final Object object) {
+	protected static boolean isNullValue(final Object object) {
 		return object instanceof Null;
 	}
 
@@ -207,7 +207,7 @@ public abstract class JSON extends Parser {
 	 * @param object The object to check
 	 * @return Type the type of this object, when it is not recognised or null, it will return {@link Type#Null}
 	 */
-	protected static Type getType (final Object object) {
+	protected static Type getType(final Object object) {
 		if (object instanceof JSON)
 			return (object instanceof JSONObject ? Type.JSONObject : Type.JSONArray);
 		if (object instanceof Number)
@@ -234,7 +234,7 @@ public abstract class JSON extends Parser {
 	 * <li>Null when it starts with neither of these</li>
 	 * </ul>
 	 */
-	public static JSON parseJSON (final Reader reader) {
+	public static JSON parseJSON(final Reader reader) {
 		final Tokenizer tokenizer = new Tokenizer(reader);
 		tokenizer.skipBlanks();
 
