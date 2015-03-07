@@ -20,8 +20,6 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static com.ameling.parser.Constants.STRING_EMPTY;
-
 public class HttpProtocolHandler extends ProtocolHandler {
 
 	public static enum HttpMethod {
@@ -58,6 +56,7 @@ public class HttpProtocolHandler extends ProtocolHandler {
 		return null;
 	}
 
+	// TODO: retrieve the content-type
 	public Reader getContents(URL url, final HttpMethod method, final boolean followRedirect) throws IOException {
 		final String query = url.getQuery();
 		if (method == HttpMethod.POST)
@@ -67,7 +66,7 @@ public class HttpProtocolHandler extends ProtocolHandler {
 		connection.setRequestMethod(method.name());
 		connection.setInstanceFollowRedirects(followRedirect);
 
-		if (method == HttpMethod.POST && query != null && !STRING_EMPTY.equals(query)) {
+		if (method == HttpMethod.POST && query != null && !query.isEmpty()) {
 			connection.setRequestProperty(STRING_HEADER_CONTENT_LENGTH, Integer.toString(BYTE_DEFAULT_CHARSET.length));
 			connection.setDoOutput(true);
 

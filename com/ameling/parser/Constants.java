@@ -43,9 +43,6 @@ public final class Constants {
 	public static final char CHAR_PLUS = '+';
 	public static final char CHAR_DASH = '-';
 
-	// All used Strings
-	public static final String STRING_EMPTY = "";
-
 	// All formats to be used in Exceptions
 	public static final String FORMAT_EXPECTED_CHAR = "Expected '%s'";
 	public static final String FORMAT_EXPECTED_VALUE = "Key '%s' is not a %s";

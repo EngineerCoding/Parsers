@@ -28,7 +28,6 @@ import static com.ameling.parser.Constants.CHAR_BRACKET_CLOSE;
 import static com.ameling.parser.Constants.CHAR_BRACKET_OPEN;
 import static com.ameling.parser.Constants.CHAR_COMMA;
 import static com.ameling.parser.Constants.FORMAT_EXPECTED_CHAR;
-import static com.ameling.parser.Constants.STRING_EMPTY;
 
 public final class MathVariable extends Parser implements IComponent {
 
@@ -169,7 +168,7 @@ public final class MathVariable extends Parser implements IComponent {
 			}
 
 			final String variable = sb.toString();
-			component = new Component(STRING_EMPTY.equals(variable) ? null : variable, number);
+			component = new Component(variable.isEmpty() ? null : variable, number);
 		}
 	}
 

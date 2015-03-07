@@ -28,7 +28,6 @@ import static com.ameling.parser.Constants.CHAR_JSON_OBJECT_START;
 import static com.ameling.parser.Constants.CHAR_JSON_OBJECT_END;
 import static com.ameling.parser.Constants.CHAR_COLON;
 import static com.ameling.parser.Constants.CHAR_COMMA;
-import static com.ameling.parser.Constants.STRING_EMPTY;
 
 /**
  * This class is used to write to a {@link Writer} object. Then you can call
@@ -117,7 +116,7 @@ public class JSONWriter {
 		for (int i = 0; i < keys.length; i++) {
 			markLineEnd();
 			writeString(keys[i]);
-			writer.write(CHAR_COLON + (indent ? STRING_SPACE : STRING_EMPTY));
+			writer.write(CHAR_COLON + (indent ? STRING_SPACE : ""));
 			writeValue(parser.get(keys[i]), i != keys.length - 1);
 		}
 
