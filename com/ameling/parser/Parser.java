@@ -16,7 +16,10 @@ package com.ameling.parser;
  * limitations under the License.
  ******************************************************************************/
 
+import com.ameling.parser.reader.Tokenizer;
+
 import static com.ameling.parser.Constants.CHAR_DASH;
+import static com.ameling.parser.Constants.CHAR_PLUS;
 import static com.ameling.parser.Constants.CHAR_QUOTE_DOUBLE;
 import static com.ameling.parser.Constants.CHAR_QUOTE_SINGLE;
 
@@ -144,7 +147,7 @@ public abstract class Parser {
 	 * @return {@link Number} object when it successfully parsed or null when it failed
 	 * @throws SyntaxException when a syntax error occurred
 	 */
-	protected final Double parseNumber(boolean parseE) throws SyntaxException {
+	protected final Double parseNumber (boolean parseE) throws SyntaxException {
 		tokenizer.skipBlanks();
 
 		Character character;
@@ -155,7 +158,7 @@ public abstract class Parser {
 			if (Character.isDigit(character)) {
 				// The next character is a digit, simply append
 				builder.append(tokenizer.pop());
-			} else if (character == CHAR_DASH || character == Constants.CHAR_PLUS) {
+			} else if (character == CHAR_DASH || character == CHAR_PLUS) {
 				// when a '+' or '-' is the character, it will check if the builder has any digits yet.
 				// When it hasn't got any digits, it is a unary minus or plus, when it already has digits, it could be an operator.
 				// We will stop this loop because it is treated as an unknown character
@@ -177,6 +180,10 @@ public abstract class Parser {
 				if (parseE && builder.length() != 0) {
 					tokenizer.pop();
 
+					if (builder.length() == 1 && (builder.charAt(0) == CHAR_DASH || builder.charAt(0) == CHAR_PLUS)) {
+						builder.append(1);
+					}
+
 					final Number number = parseNumber(false);
 					if (number != null)
 						return Double.parseDouble(builder.toString()) * Math.pow(10D, number.doubleValue());
@@ -186,6 +193,11 @@ public abstract class Parser {
 			} else {
 				break;
 			}
+		}
+
+		if (builder.length() == 1 && (builder.charAt(0) == CHAR_DASH || builder.charAt(0) == CHAR_PLUS)) {
+			tokenizer.inject(String.valueOf(builder.charAt(0)));
+			return null;
 		}
 
 		// Return the number when the builder has any characters
@@ -217,10 +229,6 @@ public abstract class Parser {
 			for (int i = 0; i < (parseTrue ? 4 : 5) && (character = tokenizer.peek()) != null; i++) {
 				builder.append(character);
 			}
-
-			// When the characters are not the length, we couldn't parse true or false -> notify user
-			if (builder.length() != (parseTrue ? 4 : 5))
-				throw new SyntaxException(FORMAT_PARSE_BOOLEAN, parseTrue, builder.toString());
 
 			try {
 				return Boolean.parseBoolean(builder.toString());

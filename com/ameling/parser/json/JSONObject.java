@@ -17,7 +17,7 @@ package com.ameling.parser.json;
  ******************************************************************************/
 
 import com.ameling.parser.SyntaxException;
-import com.ameling.parser.Tokenizer;
+import com.ameling.parser.reader.Tokenizer;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -463,5 +463,20 @@ public class JSONObject extends JSON {
 	public void deleteNode(final String key) {
 		if (has(key))
 			storage.remove(key);
+	}
+
+	@Override
+	public boolean equals (final Object object) {
+		if(!(object instanceof JSONObject))
+			return false;
+		final JSONObject json = (JSONObject) object;
+		for (final String key : json.getKeys()) {
+			if (!has(key))
+				return false;
+			final Object obj = json.get(key);
+			if (!obj.equals(get(key)))
+				return false;
+		}
+		return true;
 	}
 }

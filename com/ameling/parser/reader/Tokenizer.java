@@ -1,4 +1,4 @@
-package com.ameling.parser;
+package com.ameling.parser.reader;
 
 /*******************************************************************************
  * Copyright 2015 Wesley Ameling
@@ -18,6 +18,7 @@ package com.ameling.parser;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.net.URL;
 
 /**
  * The tokenizer is an essential part of a parser of some type. One can use this to parse any type of text with the use of this tokenizer with
@@ -30,7 +31,7 @@ public class Tokenizer {
 	/**
 	 * Internal Character object, used by {@link #peek} and {@link #pop}
 	 */
-	private Character character;
+	private Character readerTracker;
 
 	/**
 	 * The Reader to use
@@ -38,9 +39,20 @@ public class Tokenizer {
 	private final Reader reader;
 
 	/**
+	 * The same as {@link #readerTracker}, but works with {@link #injectedCharacters}
+	 */
+	private Character injectedTracker;
+
+	/**
+	 * The readerTracker injected by {@link #inject(String)}
+	 */
+	private String injectedCharacters;
+
+	/**
 	 * Creates a new instance with the reader
 	 *
 	 * @param reader The reader to use
+	 * @throws NullPointerException when the reader is null
 	 */
 	public Tokenizer(final Reader reader) {
 		if (reader == null)
@@ -52,6 +64,31 @@ public class Tokenizer {
 	}
 
 	/**
+	 * Creates a new instance with the information from the content
+	 * @param url The information of this url will be used to obtain the content
+	 * @throws NullPointerException when the url is null
+	 */
+	public Tokenizer(final URL url) {
+		this(ProtocolHandler.getReader(url));
+	}
+
+	/**
+	 * This method lets you inject the next string to be read. This works same as the reader which is used, other then this is not a reader.
+	 * @param sequence The string to inject
+	 */
+	public void inject(final String sequence) {
+		if (sequence != null) {
+			if (injectedCharacters != null) {
+				injectedCharacters += sequence;
+			} else {
+				injectedTracker = sequence.charAt(0);
+				if (sequence.length() > 2)
+					injectedCharacters = sequence.substring(1);
+			}
+		}
+	}
+
+	/**
 	 * This method looks at the next character, and when it matches the given char it will {@link #pop()} and return true
 	 *
 	 * @param character - The character to match
@@ -60,7 +97,7 @@ public class Tokenizer {
 	 * @see #peek()
 	 * @see #skipBlanks()
 	 */
-	public boolean isNext(char character) {
+	public boolean isNext(final char character) {
 		skipBlanks();
 		final Character c = peek();
 		if (c != null && c == character) {
@@ -79,7 +116,7 @@ public class Tokenizer {
 	 * </ul>
 	 */
 	public Character peek() {
-		return character;
+		return injectedTracker != null ? injectedTracker : readerTracker;
 	}
 
 	/**
@@ -91,21 +128,33 @@ public class Tokenizer {
 	 * </ul>
 	 */
 	public Character pop() {
-		if (character != null) {
-			final Character backup = character;
-			try {
-				final int cValue = reader.read();
-				if (cValue == -1) {
-					character = null;
-					reader.close(); // Release the reader's resources and close the InputStream
+		final Character backup = (injectedTracker != null ? injectedTracker : readerTracker);
+		if (injectedTracker != null) {
+			if (injectedCharacters != null && injectedCharacters.length() > 0) {
+				injectedTracker = injectedCharacters.charAt(0);
+				if (injectedCharacters.length() > 1) {
+					injectedCharacters = injectedCharacters.substring(1);
 				} else {
-					character = (char) cValue;
+					injectedCharacters = null;
 				}
-			} catch (final IOException e) {
-				character = null;
+			} else {
+				injectedTracker = null;
 			}
+			return backup;
 		}
-		return character; // Is null, technically just a lazy reference
+
+		try {
+			final int cValue = reader.read();
+			if (cValue == -1) {
+				readerTracker = null;
+				reader.close(); // Release the reader's resources and close the InputStream
+			} else {
+				readerTracker = (char) cValue;
+			}
+		} catch (final IOException e) {
+			readerTracker = null;
+		}
+		return backup;
 	}
 
 	/**

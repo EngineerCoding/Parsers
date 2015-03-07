@@ -18,7 +18,7 @@ package com.ameling.parser.math;
 
 import com.ameling.parser.Constants;
 import com.ameling.parser.SyntaxException;
-import com.ameling.parser.Tokenizer;
+import com.ameling.parser.reader.Tokenizer;
 
 import java.io.Reader;
 import java.io.StringReader;

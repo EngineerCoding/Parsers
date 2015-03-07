@@ -17,7 +17,7 @@ package com.ameling.parser.json;
  ******************************************************************************/
 
 import com.ameling.parser.Parser;
-import com.ameling.parser.Tokenizer;
+import com.ameling.parser.reader.Tokenizer;
 
 import java.io.IOException;
 import java.io.Reader;

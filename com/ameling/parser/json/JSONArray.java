@@ -17,7 +17,7 @@ package com.ameling.parser.json;
  ******************************************************************************/
 
 import com.ameling.parser.SyntaxException;
-import com.ameling.parser.Tokenizer;
+import com.ameling.parser.reader.Tokenizer;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -35,14 +35,14 @@ import static com.ameling.parser.Constants.*;
 public class JSONArray extends JSON {
 
 	/**
-	 * A {@link List} to store keys with a value
+	 * A {@link java.util.List} to store keys with a value
 	 */
 	private final List<Object> storage = new ArrayList<Object>();
 
 	/**
 	 * Creates an empty JSONArray
 	 */
-	public JSONArray() {
+	public JSONArray () {
 		super(null);
 	}
 
@@ -52,7 +52,7 @@ public class JSONArray extends JSON {
 	 *
 	 * @param jsonarray The string that reads a JSONArray
 	 */
-	public JSONArray(final String jsonarray) {
+	public JSONArray (final String jsonarray) {
 		this(new StringReader(jsonarray));
 	}
 
@@ -63,7 +63,7 @@ public class JSONArray extends JSON {
 	 * @param reader The reader to use for this object
 	 * @throws SyntaxException when a syntax error is detected in this string
 	 */
-	public JSONArray(final Reader reader) {
+	public JSONArray (final Reader reader) {
 		this(new Tokenizer(reader));
 	}
 
@@ -73,7 +73,7 @@ public class JSONArray extends JSON {
 	 * @param tokenizer - The tokenizer which is used to parse
 	 * @throws SyntaxException when a syntax error is detected in this tokenizer
 	 */
-	public JSONArray(final Tokenizer tokenizer) {
+	public JSONArray (final Tokenizer tokenizer) {
 		super(tokenizer);
 
 		if (tokenizer.isNext(CHAR_JSON_ARRAY_START)) { // find the starting character
@@ -101,10 +101,10 @@ public class JSONArray extends JSON {
 	 * @return Whether it exists in the storage or not
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public boolean has(final int key) {
+	public boolean has (final int key) {
 		if (key >= 0 && key < storage.size())
 			return true;
-		throw new JSONException(FORMAT_EXPECTED_EXISTING_KEY, key, TYPE_JSON_ARRAY);
+		return false;
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class JSONArray extends JSON {
 	 * an actual value or java-null
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public boolean isNull(final int key) {
+	public boolean isNull (final int key) {
 		return JSON.isNullValue(get(key));
 	}
 
@@ -123,10 +123,10 @@ public class JSONArray extends JSON {
 	 * Retrieves the type of the object which is associated with the key
 	 *
 	 * @param key The key of the associated value
-	 * @return A {@link Type} object, defining the object which is associated with the key
+	 * @return A {@link com.ameling.parser.json.JSON.Type} object, defining the object which is associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public Type getType(final int key) {
+	public JSON.Type getType (final int key) {
 		return JSON.getType(get(key));
 	}
 
@@ -137,10 +137,10 @@ public class JSONArray extends JSON {
 	 * @return The value associated with the keys
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public Object get(final int key) {
+	public Object get (final int key) {
 		if (has(key))
 			return storage.get(key);
-		return null;
+		throw new JSONException(FORMAT_EXPECTED_EXISTING_KEY, key, TYPE_JSON_ARRAY);
 	}
 
 	/**
@@ -150,7 +150,7 @@ public class JSONArray extends JSON {
 	 * @return The {@link String} associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public String getString(final int key) {
+	public String getString (final int key) {
 		if (getType(key) == Type.String)
 			return (String) get(key);
 		throw new JSONException(FORMAT_EXPECTED_VALUE, key, TYPE_STRING);
@@ -164,7 +164,7 @@ public class JSONArray extends JSON {
 	 * @return The {@link Number} associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	private Number getNumber(final int key, final String type) {
+	private Number getNumber (final int key, final String type) {
 		if (getType(key) == Type.Number)
 			return (Number) get(key);
 		throw new JSONException(FORMAT_EXPECTED_VALUE, key, type);
@@ -177,7 +177,7 @@ public class JSONArray extends JSON {
 	 * @return The long associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public long getLong(final int key) {
+	public long getLong (final int key) {
 		return getNumber(key, TYPE_LONG).longValue();
 	}
 
@@ -188,7 +188,7 @@ public class JSONArray extends JSON {
 	 * @return The int associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public int getInt(final int key) {
+	public int getInt (final int key) {
 		return getNumber(key, TYPE_INT).intValue();
 	}
 
@@ -199,7 +199,7 @@ public class JSONArray extends JSON {
 	 * @return The short associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public short getShort(final int key) {
+	public short getShort (final int key) {
 		return getNumber(key, TYPE_SHORT).shortValue();
 	}
 
@@ -210,7 +210,7 @@ public class JSONArray extends JSON {
 	 * @return The byte associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public byte getByte(final int key) {
+	public byte getByte (final int key) {
 		return getNumber(key, TYPE_BYTE).byteValue();
 	}
 
@@ -221,7 +221,7 @@ public class JSONArray extends JSON {
 	 * @return The double associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public double getDouble(final int key) {
+	public double getDouble (final int key) {
 		return getNumber(key, TYPE_DOUBLE).doubleValue();
 	}
 
@@ -232,7 +232,7 @@ public class JSONArray extends JSON {
 	 * @return The float associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public float getFloat(final int key) {
+	public float getFloat (final int key) {
 		return getNumber(key, TYPE_FLOAT).floatValue();
 	}
 
@@ -243,7 +243,7 @@ public class JSONArray extends JSON {
 	 * @return The boolean associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public boolean getBoolean(final int key) {
+	public boolean getBoolean (final int key) {
 		if (getType(key) == Type.Boolean)
 			return (Boolean) get(key);
 		throw new JSONException(FORMAT_EXPECTED_VALUE, TYPE_BOOLEAN);
@@ -256,20 +256,20 @@ public class JSONArray extends JSON {
 	 * @return The {@link JSONObject} associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public JSONObject getJSONObject(final int key) {
+	public JSONObject getJSONObject (final int key) {
 		if (getType(key) == Type.JSONObject)
 			return (JSONObject) get(key);
 		throw new JSONException(FORMAT_EXPECTED_VALUE, TYPE_JSON_OBJECT);
 	}
 
 	/**
-	 * Retrieves a value from the key and tries to convert it to a {@link JSONArray}
+	 * Retrieves a value from the key and tries to convert it to a {@link com.ameling.parser.json.JSONArray}
 	 *
 	 * @param key Int defining a key which is in the {@link #storage}
-	 * @return The {@link JSONArray} associated with the key
+	 * @return The {@link com.ameling.parser.json.JSONArray} associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public JSONArray getJSONArray(final int key) {
+	public JSONArray getJSONArray (final int key) {
 		if (getType(key) == Type.JSONArray)
 			return (JSONArray) get(key);
 		throw new JSONException(FORMAT_EXPECTED_VALUE, TYPE_JSON_ARRAY);
@@ -280,7 +280,7 @@ public class JSONArray extends JSON {
 	 *
 	 * @return Int max size
 	 */
-	public int getSize() {
+	public int getSize () {
 		return storage.size();
 	}
 
@@ -292,7 +292,7 @@ public class JSONArray extends JSON {
 	 * @throws IndexOutOfBoundsException when the index <code>{@link #storage}.size() < 0 || index >= {@link #storage}.size()</code>
 	 * @throws JSONException             when the value is null
 	 */
-	private JSONArray set(final int key, final Object value) {
+	private JSONArray set (final int key, final Object value) {
 		if (value != null) {
 			if (key > 0 && key < storage.size()) {
 				storage.set(key, value);
@@ -313,7 +313,7 @@ public class JSONArray extends JSON {
 	 * @throws IndexOutOfBoundsException when the index <code>{@link #storage}.size() < 0 || index >= {@link #storage}.size()</code>
 	 * @throws JSONException             when the value is null
 	 */
-	public JSONArray set(final int key, final String value) {
+	public JSONArray set (final int key, final String value) {
 		return set(key, (Object) value);
 	}
 
@@ -325,7 +325,7 @@ public class JSONArray extends JSON {
 	 * @return this
 	 * @throws IndexOutOfBoundsException when the index <code>{@link #storage}.size() < 0 || index >= {@link #storage}.size()</code>
 	 */
-	public JSONArray set(final int key, final boolean value) {
+	public JSONArray set (final int key, final boolean value) {
 		return set(key, (Boolean) value);
 	}
 
@@ -338,7 +338,7 @@ public class JSONArray extends JSON {
 	 * @throws IndexOutOfBoundsException when the index <code>{@link #storage}.size() < 0 || index >= {@link #storage}.size()</code>
 	 * @throws JSONException             when the value is null
 	 */
-	public JSONArray set(final int key, final JSONObject value) {
+	public JSONArray set (final int key, final JSONObject value) {
 		return set(key, (Object) value);
 	}
 
@@ -351,7 +351,7 @@ public class JSONArray extends JSON {
 	 * @throws IndexOutOfBoundsException when the index <code>{@link #storage}.size() < 0 || index >= {@link #storage}.size()</code>
 	 * @throws JSONException             when the value is null
 	 */
-	public JSONArray set(final int key, final JSONArray value) {
+	public JSONArray set (final int key, final JSONArray value) {
 		return set(key, (Object) value);
 	}
 
@@ -363,7 +363,7 @@ public class JSONArray extends JSON {
 	 * @return this
 	 * @throws IndexOutOfBoundsException when the index <code>{@link #storage}.size() < 0 || index >= {@link #storage}.size()</code>
 	 */
-	public JSONArray set(final int key, final long value) {
+	public JSONArray set (final int key, final long value) {
 		return set(key, (Long) value);
 	}
 
@@ -375,7 +375,7 @@ public class JSONArray extends JSON {
 	 * @return this
 	 * @throws IndexOutOfBoundsException when the index <code>{@link #storage}.size() < 0 || index >= {@link #storage}.size()</code>
 	 */
-	public JSONArray set(final int key, final int value) {
+	public JSONArray set (final int key, final int value) {
 		return set(key, (Integer) value);
 	}
 
@@ -387,7 +387,7 @@ public class JSONArray extends JSON {
 	 * @return this
 	 * @throws IndexOutOfBoundsException when the index <code>{@link #storage}.size() < 0 || index >= {@link #storage}.size()</code>
 	 */
-	public JSONArray set(final int key, final short value) {
+	public JSONArray set (final int key, final short value) {
 		return set(key, (Short) value);
 	}
 
@@ -399,7 +399,7 @@ public class JSONArray extends JSON {
 	 * @return this
 	 * @throws IndexOutOfBoundsException when the index <code>{@link #storage}.size() < 0 || index >= {@link #storage}.size()</code>
 	 */
-	public JSONArray set(final int key, final byte value) {
+	public JSONArray set (final int key, final byte value) {
 		return set(key, (Byte) value);
 	}
 
@@ -411,7 +411,7 @@ public class JSONArray extends JSON {
 	 * @return this
 	 * @throws IndexOutOfBoundsException when the index <code>{@link #storage}.size() < 0 || index >= {@link #storage}.size()</code>
 	 */
-	public JSONArray set(final int key, final double value) {
+	public JSONArray set (final int key, final double value) {
 		return set(key, (Double) value);
 	}
 
@@ -423,7 +423,7 @@ public class JSONArray extends JSON {
 	 * @return this
 	 * @throws IndexOutOfBoundsException when the index <code>{@link #storage}.size() < 0 || index >= {@link #storage}.size()</code>
 	 */
-	public JSONArray set(final int key, final float value) {
+	public JSONArray set (final int key, final float value) {
 		return set(key, (Float) value);
 	}
 
@@ -434,7 +434,7 @@ public class JSONArray extends JSON {
 	 * @return this
 	 * @throws IndexOutOfBoundsException when the index <code>{@link #storage}.size() < 0 || index >= {@link #storage}.size()</code>
 	 */
-	public JSONArray setNull(final int key) {
+	public JSONArray setNull (final int key) {
 		return set(key, JSON.NULL);
 	}
 
@@ -445,7 +445,7 @@ public class JSONArray extends JSON {
 	 * @return this
 	 * @throws JSONException when the value is null
 	 */
-	private JSONArray add(final Object value) {
+	private JSONArray add (final Object value) {
 		if (value != null) {
 			storage.add(value);
 			return this;
@@ -459,7 +459,7 @@ public class JSONArray extends JSON {
 	 * @return this
 	 * @throws JSONException when the value is null
 	 */
-	public JSONArray add(final String string) {
+	public JSONArray add (final String string) {
 		return add((Object) string);
 	}
 
@@ -469,7 +469,7 @@ public class JSONArray extends JSON {
 	 * @param value The value to add
 	 * @return this
 	 */
-	public JSONArray add(final boolean value) {
+	public JSONArray add (final boolean value) {
 		return add((Boolean) value);
 	}
 
@@ -480,7 +480,7 @@ public class JSONArray extends JSON {
 	 * @return this
 	 * @throws JSONException when the value is null
 	 */
-	public JSONArray add(final JSONObject value) {
+	public JSONArray add (final JSONObject value) {
 		return add((Object) value);
 	}
 
@@ -491,7 +491,7 @@ public class JSONArray extends JSON {
 	 * @return this
 	 * @throws JSONException when the value is null
 	 */
-	public JSONArray add(final JSONArray value) {
+	public JSONArray add (final JSONArray value) {
 		return add((Object) value);
 	}
 
@@ -501,7 +501,7 @@ public class JSONArray extends JSON {
 	 * @param value The value to add
 	 * @return this
 	 */
-	public JSONArray add(final long value) {
+	public JSONArray add (final long value) {
 		return add((Long) value);
 	}
 
@@ -511,7 +511,7 @@ public class JSONArray extends JSON {
 	 * @param value The value to add
 	 * @return this
 	 */
-	public JSONArray add(final int value) {
+	public JSONArray add (final int value) {
 		return add((Integer) value);
 	}
 
@@ -521,7 +521,7 @@ public class JSONArray extends JSON {
 	 * @param value The value to add
 	 * @return this
 	 */
-	public JSONArray add(final short value) {
+	public JSONArray add (final short value) {
 		return add((Short) value);
 	}
 
@@ -531,7 +531,7 @@ public class JSONArray extends JSON {
 	 * @param value The value to add
 	 * @return this
 	 */
-	public JSONArray add(final byte value) {
+	public JSONArray add (final byte value) {
 		return add((Byte) value);
 	}
 
@@ -541,7 +541,7 @@ public class JSONArray extends JSON {
 	 * @param value The value to add
 	 * @return this
 	 */
-	public JSONArray add(final double value) {
+	public JSONArray add (final double value) {
 		return add((Double) value);
 	}
 
@@ -551,16 +551,16 @@ public class JSONArray extends JSON {
 	 * @param value The value to add
 	 * @return this
 	 */
-	public JSONArray add(final float value) {
+	public JSONArray add (final float value) {
 		return add((Float) value);
 	}
 
 	/**
-	 * Adds {@link JSON#NULL} to {@link #storage}
+	 * Adds {@link com.ameling.parser.json.JSON#NULL} to {@link #storage}
 	 *
 	 * @return this
 	 */
-	public JSONArray addNull() {
+	public JSONArray addNull () {
 		return add(JSON.NULL);
 	}
 
@@ -571,8 +571,24 @@ public class JSONArray extends JSON {
 	 * @return The int associated with the key
 	 * @throws JSONException when the key is not in the {@link #storage}
 	 */
-	public void deleteNode(final int key) {
+	public void deleteNode (final int key) {
 		if (has(key))
 			storage.remove(key);
+	}
+
+	@Override
+	public boolean equals(final Object object) {
+		if (!(object instanceof JSONArray))
+			return false;
+		final JSONArray array = (JSONArray) object;
+		if (array.getSize() != getSize())
+			return false;
+
+		for (int i = 0; i < array.getSize(); i++) {
+			final Object obj = array.get(i);
+			if (!obj.equals(get(i)))
+				return false;
+		}
+		return true;
 	}
 }
